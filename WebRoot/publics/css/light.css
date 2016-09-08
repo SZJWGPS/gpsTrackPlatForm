@@ -1,0 +1,318 @@
+/* 
+ * light.css
+ * 20160908
+ */
+html, body {
+	width: 100%;
+	height: 100%;
+}
+body {
+	margin: 0;
+	padding: 0;
+	min-width: 960px;
+	font-family: 'Microsoft YaHei';
+	min-height: 550px;
+	overflow: hidden;
+}
+.container {
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+}
+.map {
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	margin: auto;
+	width: 100%;
+	height: 100%;
+	z-index: 0;
+}
+/* top nav bar */
+.top-nav {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 65px;
+	background-color: rgba(0, 0, 0, .45);
+	overflow: hidden;
+}
+.top-nav .logo {
+	height: 65px;
+	line-height: 100%;
+	background: url('../images/sztb2.png') left top no-repeat;
+	overflow: hidden;
+}
+/*
+* @顶部按钮组
+*/
+.top-nav .btn-groups {
+	display: -webkit-flex;
+	display: -moz-flex;
+	display: -ms-flex;
+	display: flex;
+	align-items: center;
+	height: 100%;
+	line-height: 100%;
+}
+.time-btn-groups input.btn {
+	padding: 4px 2px;
+	text-align: left;
+	font-size: 12px;
+}
+.time-btn-groups input[type='text'] {
+	max-width: 120px;
+	font-size: 12px;
+}
+.time-btn-groups label {
+	font-weight: 400;
+	font-size: 13px;
+	color: #FFF;
+	letter-spacing: 0.5px;
+}
+.time-btn-groups .label-group {
+	display: inline-block;
+	margin: 0 5px;
+}
+.select-box {
+	height: 120px;
+	overflow: hidden;
+}
+.time-btn-groups select {
+	max-height: 120px;
+	font-size: 12px;
+	padding: 4px 0 4px 2px;
+	border-radius: 4px;
+	border: 0;
+	overflow: scroll;
+}
+.time-btn-groups select option {
+	text-align: center;
+}
+.search-btn {
+	margin-left: 15px;
+	width: 80px;
+}
+.right-menu {
+	position: absolute;
+	right: 10px;
+	display: inline-block;
+	width: 35px;
+	height: 26px;
+	line-height: 0;
+	margin: 20px 0;
+	text-align: center;
+	cursor: pointer;
+}
+.right-menu span {
+	display: inline-block;
+	width: 28px;
+	border: 1px solid #fff;
+	margin-top: 5px;
+}
+/* echar 图表展示 */
+.echarts {
+	position: absolute;
+	top: 70px;
+	right: 10px;
+	width: 350px;
+	height: 88%;
+	min-height: 500px;
+	padding: 0 5px;
+	background-color: rgba(255, 255, 255, 0.85);
+}
+.echarts .btn-groups {
+	padding: 0;
+	margin: 0 -5px;
+	text-align: center;
+}
+.echarts .echart-btn {
+	list-style: none;
+	display: inline-block;
+	width: 33.3%;
+	line-height: 1.5;
+	padding: 5px 0;
+	margin: 0 -3px;
+	color: #FFF;
+	text-align: center;
+	background-color: rgba(0, 0, 0, 0.6);
+	transition: all .5s;
+	cursor: pointer;
+}
+.echarts .echart-btn:hover {
+ background-color: rgba(220, 91, 42, 1)
+}
+.echarts .btn-actived {
+	background-color: rgba(220, 91, 42, 1) !important;
+}
+.echart-box {
+	position: relative;
+	width: 100%;
+	height: 550px;
+	overflow: hidden;
+}
+#blank_taxi, #hotPoints_taxi {
+	height: 550px;
+	margin-top: 10px;
+	overflow: hidden;
+}
+/* city-zone 嵌套与右侧浮动div内 */
+.city-zone {
+	position: absolute;
+	bottom: 0;
+	width: 100%;
+	overflow: hidden;
+}
+.city-zone .zone-groups {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+.zone-groups .item {
+	display: inline-block;
+	width: 30%;
+	line-height: 1.5;
+	padding: 5px 0;
+	text-align: center;
+	color: #FFF;
+	margin: 3px 3px;
+	background-color: rgba(0, 0, 0, 0.6);
+	transition: all .5s;
+	cursor: pointer;
+}
+.zone-groups .item:hover {
+	background-color: rgba(220, 91, 42, 1);
+
+}
+/* mask layer for trend echart */
+#mask-layer {
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, 0.75);
+	opacity: 0;
+	z-index: -999; 
+}
+#mask-layer .inner-box {
+	position: relative;
+	width: 85%;
+	height: 450px;
+	margin: 67px auto;
+	padding: 15px;
+	background-color: #eee;
+	overflow: hidden;
+}
+#mask-layer .inner-box .select-groups {
+	position: absolute;
+	right: 15px;
+	width: 115px;
+	border-radius: 3px;
+	background-color: cornflowerblue;
+}
+#mask-layer .select-groups span {
+	display: inline-block;
+	padding: 4px 10px;
+	line-height: 20px;
+	text-align: center;
+	color: #FFF;
+	cursor: pointer;
+}
+#mask-layer #trend_chart_box {
+	height: 410px;
+	overflow: hidden;
+}
+#trend_chart_box #trend_time, #trend_chart_box #trend_date {
+	height: 390px;
+	margin-top: 45px;
+	overflow: hidden;
+}
+#mask-layer .select-groups #ByHours {
+	border-radius: 4px 0 0 4px;
+}
+#mask-layer .select-groups #ByDay {
+	border-radius: 0 4px 4px 0;
+} 
+#mask-layer .inner-box .actived {
+	background-color: #2f70e6;
+}
+
+/* 圆点自动缩放动画 */
+.pointAnimate {
+  width: 50px;
+  height: 50px;
+  position: relative;
+}
+.pointAnimate .s-cir {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 10px;
+  background-color: rgb(255, 0, 51);
+  z-index: 2;
+}
+.pointAnimate .b-cir {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: inline-block;
+  background-color: #000;
+  border-radius: 50%;
+  -moz-transform: scale(.1, .1);
+  -webkit-transform: scale(.1, .1);
+  -o-transform: scale(.1, .1);
+  transform: scale(.1, .1);
+  z-index: 1;
+  opacity: .4;
+  -moz-animation: animation 4s ease infinite;
+  -webkit-animation: animation 4s ease infinite;
+  -o-animation: animation 4s ease infinite;
+  animation: animation 4s ease infinite;
+}
+.pointAnimate .addrName {
+  position: absolute;
+  right: -40px;
+  top: 0px;
+  display: inline-block;
+  padding: 3px 4px;
+  font-size: 12px;
+  color: #fff;
+  background-color: rgba(51, 51, 51, 0.46);	
+  border-radius: 4px;
+}
+
+/* start animation */
+@-moz-keyframes animation{
+	from{opacity:.7;-moz-transform:scale(.1,.1);transform:scale(.1,.1)}
+	to{opacity:0;-moz-transform:scale(1,1);transform:scale(1,1)}}
+
+@-webkit-keyframes animation{
+	from{opacity:.7;-webkit-transform:scale(.1,.1);transform:scale(.1,.1)}
+	to{opacity:0;-webkit-transform:scale(1,1);transform:scale(1,1)}}
+
+@-o-keyframes animation{
+	from{opacity:.7;-o-transform:scale(.1,.1);transform:scale(.1,.1)}
+	to{opacity:0;-o-transform:scale(1,1);transform:scale(1,1)}}
+
+@keyframes animation{
+	from{opacity:.7;transform:scale(.1,.1)}
+	to{opacity:0;transform:scale(1,1)}}
+/* end animation */
+
+/* @media 适应不同大小终端 */
+@media (max-width: 768px) {
+	body {
+		font-size: 10px;
+	}
+}

@@ -1,0 +1,180 @@
+html, body {
+	width: 100%;
+	height: 100%;
+}
+body {
+	margin: 0;
+	padding: 0;
+	min-width: 960px;
+	font-family: '微软雅黑';
+	min-height: 550px;
+	overflow: hidden;
+}
+.container {
+	/*position: relative;*/
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+}
+.map {
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	margin: auto;
+	width: 100%;
+	height: 100%;
+	z-index: 0;
+}
+/* top nav bar */
+.top-nav {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 65px;
+	background-color: rgba(51, 51, 51, .45);
+	overflow: hidden;
+}
+.top-nav .logo {
+	height: 65px;
+	line-height: 100%;
+	background: url('../images/sztb2.png') left top no-repeat;
+	overflow: hidden;
+}
+/*
+ * @顶部按钮组
+ */
+.top-nav .btn-groups {
+	display: -webkit-flex;
+	display: -moz-flex;
+	display: -ms-flex;
+	display: flex;
+	align-items: center;
+	height: 100%;
+	line-height: 100%;
+}
+.btn-time input.btn {
+	padding: 4px 2px;
+	text-align: left;
+	font-size: 12px;
+}
+.btn-time input[type='text'] {
+	max-width: 120px;
+	font-size: 12px;
+}
+.btn-time label {
+	font-weight: 400;
+	font-size: 13px;
+	color: #FFF;
+	letter-spacing: 0.5px;
+}
+.select-box {
+	height: 120px;
+	overflow: hidden;
+}
+.btn-time select {
+	max-height: 120px;
+	font-size: 12px;
+	padding: 4px 0 4px 2px;
+	border-radius: 4px;
+	border: 0;
+	overflow: scroll;
+}
+.btn-time select option {
+	text-align: center;
+}
+/* echar 图表展示 */
+.echarts {
+	position: absolute;
+	top: 70px;
+	right: 10px;
+	width: 350px;
+	height: 88%;
+	min-height: 500px;
+	padding: 0 5px;
+	background-color: rgba(24, 68, 93, 0.5);
+}
+.echarts .btn-groups {
+	padding: 0;
+	margin: 0 -5px;
+	text-align: center;
+}
+.echarts .echart-btn {
+	list-style: none;
+	display: inline-block;
+	width: 33.3%;
+	line-height: 1.5;
+	padding: 5px 0;
+	margin: 0 -2px;
+	color: #FFF;
+	text-align: center;
+	background-color: rgba(26, 85, 117, 0.6);
+	transition: all .5s;
+	cursor: pointer;
+}
+.echarts .echart-btn:hover {
+  background-color: #008cff;
+}
+.btn-actived {
+	background-color: #008cff !important;
+}
+.echart-box {
+	position: relative;
+	width: 100%;
+	height: 390px;
+	overflow: hidden;
+}
+#blank_taxi, #hotPoints_taxi, #trend_taxi {
+	height: 390px;
+	margin-top: 10px;
+	overflow: hidden;
+}
+/* city-zone 嵌套与右侧浮动div内 */
+.city-zone {
+	position: absolute;
+	bottom: 0;
+	width: 100%;
+	overflow: hidden;
+}
+.city-zone .zone-groups {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+.zone-groups .item {
+	display: inline-block;
+	width: 30%;
+	line-height: 1.5;
+	padding: 5px 0;
+	text-align: center;
+	color: #FFF;
+	margin: 3px 3px;
+	background-color: rgba(26, 85, 117, 0.6);
+	transition: all .5s;
+	cursor: pointer;
+}
+.zone-groups .item:hover {
+	background-color: rgba(0, 140, 255, 1);
+}
+
+/* mask layer for trend echart */
+.mask-layer {
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	display: none;
+	background-color: rgba(0, 0, 0, 0.7) !important;
+	z-index: 1;
+}
+/* @media 适应不同大小终端 */
+@media (max-width: 768px) {
+	body {
+		font-size: 10px;
+	}
+}
