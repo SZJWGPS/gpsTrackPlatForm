@@ -6,7 +6,6 @@ import net.sf.json.JSONObject;
 public class GpsJson {
 	// gpsJson根对象
 	private JSONObject gpsJson = new JSONObject();
-
 	// 散点图坐标json数组
 	private JSONArray sanDianTu = new JSONArray();
 	// 热力图json数组
@@ -23,6 +22,8 @@ public class GpsJson {
 	private JSONObject point_normal = new JSONObject();
 	private JSONArray point_normal_name = new JSONArray();
 	private JSONArray point_normal_value = new JSONArray();
+	private JSONArray point_normal_spots = new JSONArray();
+
 	// 热点区域数据对象
 	private JSONObject point_hotpoint = new JSONObject();
 	private JSONArray point_hotpoint_name = new JSONArray();
@@ -42,6 +43,12 @@ public class GpsJson {
 	private JSONObject trendChart_byday = new JSONObject();
 	private JSONArray trendChart_byday_data = new JSONArray();
 	private JSONArray trendChart_byday_xAxi = new JSONArray();
+
+	// ---------------------------------------------
+	// 走势图按星期统计数据对象
+	private JSONObject trendChart_byweek = new JSONObject();
+	private JSONArray trendChart_byweek_data = new JSONArray();
+	private JSONArray trendChart_byweek_xAxi = new JSONArray();
 
 	/**********************************************/
 
@@ -108,16 +115,33 @@ public class GpsJson {
 	}
 
 	/**
+	 * 
 	 * 添加重点监控区域名称,和对应上客次数
 	 * 
 	 * @param normalArea_name
 	 *            重点监控区域名称
+	 * @param jingdu_lo
+	 *            区域中心经度
+	 * @param weidu_la
+	 *            区域中心纬度
 	 * @param normalArea_value
 	 *            重点监控区域上客次数
+	 * 
 	 */
-	public void addPoint_normal(String normalArea_name, int normalArea_value) {
+	public void addPoint_normal(String normalArea_name, double jingdu_lo,
+			double weidu_la, int normalArea_value) {
 		point_normal_name.add(normalArea_name);
 		point_normal_value.add(normalArea_value);
+
+		JSONArray jingWeiArr = new JSONArray();
+		jingWeiArr.add(0, jingdu_lo);
+		jingWeiArr.add(1, weidu_la);
+
+		JSONObject spot = new JSONObject();
+		spot.put("lnglat", jingWeiArr);
+		spot.put("name", normalArea_name);
+
+		point_normal_spots.add(spot);
 	}
 
 	/**
@@ -156,9 +180,19 @@ public class GpsJson {
 	public void addPoint_trendChart_byday(int byday_data, String xAxi_day) {
 		trendChart_byday_data.add(byday_data);
 		trendChart_byday_xAxi.add(xAxi_day);
-	}	
-	
-	
+	}
+
+	/**
+	 * 添加走势图按星期统计纵轴数据和横坐标名称
+	 * 
+	 * @param byweek_data
+	 * @param xAxi_week
+	 */
+	public void addPoint_trendChart_byweek(int byweek_data, String xAxi_week) {
+		trendChart_byweek_data.add(byweek_data);
+		trendChart_byweek_xAxi.add(xAxi_week);
+	}
+
 	/**
 	 * 获取GpsJson对象
 	 * 
@@ -172,6 +206,7 @@ public class GpsJson {
 		// 重点区域数据
 		point_normal.put("name", point_normal_name);
 		point_normal.put("value", point_normal_value);
+		point_normal.put("spot", point_normal_spots);
 		point.put("normal", point_normal);
 		// 热点区域数据
 		point_hotpoint.put("name", point_hotpoint_name);
@@ -188,41 +223,45 @@ public class GpsJson {
 		trendChart_byday.put("data", trendChart_byday_data);
 		trendChart_byday.put("xAxi", trendChart_byday_xAxi);
 		trendChart.put("byday", trendChart_byday);
+		// 按星期统计走势图数据
+		trendChart_byweek.put("data", trendChart_byweek_data);
+		trendChart_byweek.put("xAxi", trendChart_byweek_xAxi);
+		trendChart.put("byweek", trendChart_byweek);
 
 		gpsJson.put("trendchart", trendChart);
 		return gpsJson;
 	}
-	
-	/*public static void main(String[] args) {
 
-	GpsJson gpsJsonUtil = new GpsJson();
-	double jingdu_lo = 122.123456;
-	double weidu_la = 22.123456;
-	double jingdu_lo1 = 222.123456;
-	double weidu_la1 = 32.123456;
-	gpsJsonUtil.addSanDian(jingdu_lo, weidu_la);
-	gpsJsonUtil.addSanDian(jingdu_lo1, weidu_la1);
-	gpsJsonUtil.addHeatMapPoint(jingdu_lo, weidu_la, 1);
-	gpsJsonUtil.addHeatMapPoint(jingdu_lo1, weidu_la1, 2);
-	
-	gpsJsonUtil.setHeatMapMax(200);
-	gpsJsonUtil.setOnOffValue(400, 300);
-	
-	gpsJsonUtil.addPoint_normal("深圳机场", 100);
-	gpsJsonUtil.addPoint_normal("华强北", 200);
-	
-	gpsJsonUtil.addPoint_hotpoint("竹子林", 80);
-	gpsJsonUtil.addPoint_hotpoint("罗湖站", 160);
-	
-	gpsJsonUtil.addPoint_trendChart_byHourFrame(160,"0点");
-	gpsJsonUtil.addPoint_trendChart_byHourFrame(200,"2点");
-	
-	gpsJsonUtil.addPoint_trendChart_byday(500, "07-01");
-	gpsJsonUtil.addPoint_trendChart_byday(200, "07-02");		
-	
-	System.out.println("\n\n\n\n");
-	System.out.println(gpsJsonUtil.getGpsJson());
+	public static void main(String[] args) {
 
-}*/
+		GpsJson gpsJsonUtil = new GpsJson();
+		double jingdu_lo = 122.123456;
+		double weidu_la = 22.123456;
+		double jingdu_lo1 = 222.123456;
+		double weidu_la1 = 32.123456;
+		gpsJsonUtil.addSanDian(jingdu_lo, weidu_la);
+		gpsJsonUtil.addSanDian(jingdu_lo1, weidu_la1);
+		gpsJsonUtil.addHeatMapPoint(jingdu_lo, weidu_la, 1);
+		gpsJsonUtil.addHeatMapPoint(jingdu_lo1, weidu_la1, 2);
+
+		gpsJsonUtil.setHeatMapMax(200);
+		gpsJsonUtil.setOnOffValue(400, 300);
+
+		gpsJsonUtil.addPoint_normal("深圳机场", 114.22, 22.35, 100);
+		gpsJsonUtil.addPoint_normal("华强北", 123.223, 23.88, 200);
+
+		gpsJsonUtil.addPoint_hotpoint("竹子林", 80);
+		gpsJsonUtil.addPoint_hotpoint("罗湖站", 160);
+
+		gpsJsonUtil.addPoint_trendChart_byHourFrame(160, "0点");
+		gpsJsonUtil.addPoint_trendChart_byHourFrame(200, "2点");
+
+		gpsJsonUtil.addPoint_trendChart_byday(500, "07-01");
+		gpsJsonUtil.addPoint_trendChart_byday(200, "07-02");
+
+		System.out.println("\n\n\n\n");
+		System.out.println(gpsJsonUtil.getGpsJson());
+
+	}
 
 }

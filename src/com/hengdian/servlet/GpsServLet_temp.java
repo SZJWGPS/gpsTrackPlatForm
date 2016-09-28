@@ -21,10 +21,10 @@ import com.hengdian.utils.DateAndTimeUtils;
 import com.hengdian.utils.GadgetUtils;
 import com.hengdian.utils.JDBCUtils;
 
-public class GpsServLet extends HttpServlet {
+public class GpsServLet_temp extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-	public GpsServLet() {
+	public GpsServLet_temp() {
 		super();
 	}
 
@@ -79,20 +79,19 @@ public class GpsServLet extends HttpServlet {
 			table = "sz_taxi_track";
 			break;
 		}
-
-		String sql = "select * from " + table
-				+ " where" // + districtQueryStr +" and"
+		
+		table = "sz_taxi_track";
+		String sql = "select * from " + table + " where" + districtQueryStr +" and"
+				//+ " record_date >= ? and record_date <=?"
 				+ " record_date between ? and ?"
 				+ " and record_time between ? and ?"
 				+ " and (status=2 or status=3)" 
 				//+ " order by random()"
-				+ " limit 5000";
+				 + " limit 10000";
 
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		SimpleDateFormat sdf_date = new SimpleDateFormat("yyyy-MM-dd");
 		SimpleDateFormat sdf_time = new SimpleDateFormat("HH:mm:ss");
-		//SimpleDateFormat sdf_hour = new SimpleDateFormat("HH");
-		SimpleDateFormat sdf_week = new SimpleDateFormat("E");
 
 		Date startDateTime = null;
 		Date endDateTime = null;
@@ -134,13 +133,13 @@ public class GpsServLet extends HttpServlet {
 		session.setAttribute("startTime", startTimeStr);
 		session.setAttribute("endTime", endTimeStr);
 		session.setAttribute("district", districtCode);
-
+			
 		Object[] valueArr = new Object[4];
 		// valueArr[0] = "'" + startDateStr + "'";
 		// valueArr[1] = "'" + endDateStr + " 23:59:59'";
 		valueArr[0] = new java.sql.Date(startDate.getTime());
 		valueArr[1] = new java.sql.Date(endDate.getTime());
-
+		
 		valueArr[2] = "'" + startTimeStr + "'";
 		valueArr[3] = "'" + endTimeStr + ".000'";
 
@@ -172,12 +171,6 @@ public class GpsServLet extends HttpServlet {
 					.getJumpDate(startDate, i));
 		}
 
-		// 按天显示的纵坐标数据
-		int[] weekDataArr = new int[7];
-		// 获取按星期显示的横坐标日期
-		String[] trendchart_week_xAxiArr = new String[] { "星期日", "星期一", "星期二",
-				"星期三", "星期四", "星期五", "星期六" };
-
 		// 创建封装返回数据的json对象
 		GpsJson gpsJson = new GpsJson();
 		int on = 0; // 上客/重车次数
@@ -204,36 +197,26 @@ public class GpsServLet extends HttpServlet {
 					gpsJson.addSanDian(jingdu_lo, weidu_la); // 添加散点
 					gpsJson.addHeatMapPoint(jingdu_lo, weidu_la, 10); // 添加热力图点
 					// 获取时间小时数
-					String timeOfThisLine = rs.getString(9);
-
-					int time = Integer.parseInt(timeOfThisLine.substring(0, 2));
+					int time = Integer
+							.parseInt(rs.getString(9).substring(0, 2));
 					timeDataArr[time - startHour]++;
-
 					// 获取该行数据年月日
-					String dateOfThisLine = rs.getString(8);
+					String DateOfThisLine = rs.getString(8);
 					for (int q = 0; q < trendchart_day_xAxiArr.length; q++) {
-						if (dateOfThisLine.indexOf(trendchart_day_xAxiArr[q]) >= 0) {
+						if (DateOfThisLine.indexOf(trendchart_day_xAxiArr[q]) >= 0) {
 							dayDataArr[q]++;
 						}
 					}
-					// 获取该行数据星期
-					String weekOfThisLine = sdf_week.format(sdf.parse(dateOfThisLine + " " + timeOfThisLine));
-					for (int q = 0; q < trendchart_week_xAxiArr.length; q++) {
-						if (weekOfThisLine.indexOf(trendchart_week_xAxiArr[q]) >= 0) {
-							weekDataArr[q]++;
-						}
-					}
-
 				}
 			}
 
-		} catch (SQLException | ParseException e) {
+		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
 			jdbcUtils.closeAll();
 		}
-
-		double q = (endHour - startHour + 1) * days;
+		
+		double q = (endHour-startHour+1)*days*1.5;
 		double onV = 1;
 		double offV = 1;
 		switch (startHour) {
@@ -335,9 +318,10 @@ public class GpsServLet extends HttpServlet {
 			break;
 
 		}
-
+		
 		gpsJson.setHeatMapMax(10);
-		gpsJson.setOnOffValue((int) (on * onV * q), (int) (off * offV * q));
+		//gpsJson.setOnOffValue(on, off);
+		gpsJson.setOnOffValue((int)(on*onV*q), (int)(off*offV*q));
 		// 按时段显示数据数组字符串
 		for (int i = 0; i < timeDataArr.length; i++) {
 			gpsJson.addPoint_trendChart_byHourFrame(timeDataArr[i],
@@ -345,73 +329,59 @@ public class GpsServLet extends HttpServlet {
 		}
 		// 按天显示数据数组字符串
 		for (int i = 0; i < dayDataArr.length; i++) {
-			gpsJson.addPoint_trendChart_byday(dayDataArr[i],
-					trendchart_day_xAxiArr[i].substring(5));
+			gpsJson.addPoint_trendChart_byday(dayDataArr[i], trendchart_day_xAxiArr[i].substring(5));
 		}
-
-		// 按星期显示数据数组字符串
-		for (int i = 0; i < weekDataArr.length; i++) {
-			gpsJson.addPoint_trendChart_byweek(weekDataArr[i],
-					trendchart_week_xAxiArr[i]);
-		}
-
-		try {
-			String sql2 = "select name,longitude,latitude,lnglat from hotspot_info where"
-					+ districtQueryStr;
-			rs = jdbcUtils.executeQuery(sql2, null);
-
-			List<NormalPoint> points = new ArrayList<NormalPoint>();// 所选区域的监控点(名称，经度，纬度，lo_la)
-			while (rs.next()) {
-				points.add(new NormalPoint(rs.getString(1), rs.getDouble(2), rs
-						.getDouble(3), rs.getString(4)));
-			}
-
-			// 如果所选的区域有监控点，则查询相关点的数据
-			int normalPointNum = points.size();
-			if (normalPointNum > 0) {
-				String sql3 = "select";
-				for (int i = 0; i < normalPointNum; i++) {
-					sql3 += " sum (case when lnglat='" + points.get(i).lo_la
-							+ "' then 1 end) st" + normalPointNum + ",";
-				}
-				sql3 = sql3.substring(0, sql3.lastIndexOf(","));
-				sql3 += " from key_point_area where"
-						// + districtQueryStr +" and"
-						+ " status=3" + " and record_date between ? and ?"
-						+ " and record_time between ? and ?";
-
-				rs = jdbcUtils.executeQuery(sql3, valueArr);
-
-				int[] NormalPointValueArr = new int[normalPointNum];
-				while (rs.next()) {
-					for (int i = 0; i < normalPointNum; i++) {
-						NormalPointValueArr[i] = rs.getInt(i + 1);
-					}
-				}
-				System.out.println(sql3);
-				for (int i = 0; i < normalPointNum; i++) {
-					System.out.println(points.get(i).lo_la + "----"
-							+ NormalPointValueArr[i]);
-				}
-				int[] indexArr = GadgetUtils
-						.sortIntArrAndGetOldIndex(NormalPointValueArr);
-				NormalPoint point;
-				for (int i = 0; i < normalPointNum; i++) {
-					point = points.get(indexArr[i]);
-					gpsJson.addPoint_normal(point.name, point.lo, point.la,
-							NormalPointValueArr[i]);
-					System.out.println(point.lo_la + "=="
-							+ NormalPointValueArr[i]);
-				}
-			}
-		} catch (SQLException e) {
-
-			e.printStackTrace();
-		} finally {
-			jdbcUtils.closeAll(); // 关闭数据库连接
-		}
-
-		System.out.println("后台json：" + gpsJson.getGpsJson());
+		
+//		try {			
+//			String sql2 = "select name,longitude,latitude,lnglat from hotspot_info where" + districtQueryStr;		
+//			rs = jdbcUtils.executeQuery(sql2, null);
+//			
+//			List<NormalPoint> points = new ArrayList<NormalPoint>();//所选区域的监控点(名称，经度，纬度，lo_la)
+//			while (rs.next()) {				
+//				points.add(new NormalPoint(rs.getString(1), rs.getDouble(2), rs.getDouble(3), rs.getString(4)));				
+//			}
+//			
+//			//如果所选的区域有监控点，则查询相关点的数据
+//			int normalPointNum = points.size();
+//			if(normalPointNum > 0){
+//				String sql3 = "select";
+//				for(int i = 0; i< normalPointNum; i++){
+//					sql3 += " sum (case when lnglat='" + points.get(i).lo_la + "' then 1 end) st"	+ normalPointNum + ",";
+//				}				
+//				sql3 = sql3.substring(0,sql3.lastIndexOf(",") );			
+//				sql3 += " from key_point_area where"
+//						// + districtQueryStr +" and"
+//						+ " status=3" 
+//						+ " and record_date between ? and ?"
+//						+ " and record_time between ? and ?";
+//
+//				rs = jdbcUtils.executeQuery(sql3, valueArr);
+//				
+//				int[] NormalPointValueArr = new int[normalPointNum];					
+//				while (rs.next()) {
+//					for (int i = 0; i < normalPointNum; i++) {
+//						NormalPointValueArr[i] = rs.getInt(i + 1);						
+//					}
+//				}
+//				System.out.println(sql3);
+//				for(int i = 0; i < normalPointNum; i++){										
+//					System.out.println(points.get(i).lo_la + "----" +  NormalPointValueArr[i]);					
+//				}
+//				int[] indexArr = GadgetUtils.sortIntArrAndGetOldIndex(NormalPointValueArr);
+//				NormalPoint point;
+//				for(int i = 0; i < normalPointNum; i++){
+//					point = points.get(indexArr[i]);
+//					gpsJson.addPoint_normal(point.name, point.lo, point.la,	NormalPointValueArr[i]);					
+//					System.out.println(point.lo_la + "==" + NormalPointValueArr[i]);
+//				}				
+//			}
+//		} catch (SQLException e) {
+//
+//			e.printStackTrace();
+//		}
+		jdbcUtils.closeAll(); //关闭数据库连接
+		
+		//System.out.println("后台json：" + gpsJson.getGpsJson());
 		System.out.println("上客点数：" + onc);
 		// request.setAttribute("gpsjson", gpsJson.getGpsJson());
 		session.setAttribute("gpsjson", gpsJson.getGpsJson());

@@ -8,7 +8,7 @@
     <welcome-file>default.html</welcome-file>
     <welcome-file>default.htm</welcome-file>
     <welcome-file>default.jsp</welcome-file>
-  </welcome-file-list> 
+  </welcome-file-list>
   <servlet>
     <description></description>
     <display-name>GpsServLet</display-name>
@@ -19,4 +19,15 @@
     <servlet-name>GpsServLet</servlet-name>
     <url-pattern>/gpsServLet</url-pattern>
   </servlet-mapping>
+  
+   <servlet>
+    <description></description>
+    <display-name>HotspotManageServlet</display-name>
+    <servlet-name>HotspotManageServlet</servlet-name>
+    <servlet-class>com.hengdian.servlet.HotspotManageServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>HotspotManageServlet</servlet-name>
+    <url-pattern>/hotspotManageServlet</url-pattern>
+  </servlet-mapping> 
 </web-app>

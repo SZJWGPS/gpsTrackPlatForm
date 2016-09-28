@@ -101,7 +101,7 @@ public class JDBCUtils {
 		int iCount = 0;
 		try {
 			if (getConnection()) {
-				conn.setAutoCommit(false);
+				conn.setAutoCommit(true);
 				pstmt = conn.prepareStatement(sql);
 				if (val != null) {
 					// 对占位符设置值，占位符顺序从1开始，第一个参数是占位符的位置，第二个参数是占位符的值
@@ -110,7 +110,7 @@ public class JDBCUtils {
 					}
 				}
 
-				iCount = pstmt.executeUpdate();
+				iCount = pstmt.executeUpdate();				
 			}
 			return iCount;
 		} catch (SQLException e) {

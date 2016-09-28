@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>深圳市出租车轨迹数据分析</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="./publics/css/hotmap.css">
+  <script type="text/javascript"
+	src="http://webapi.amap.com/maps?v=1.3&key=d06d162e3246f0f6ca7b9780a998d372"></script>
+<script type="text/javascript" src="http://cache.amap.com/lbs/static/addToolbar.js"></script>
+  <link rel="stylesheet" href="http://cache.amap.com/lbs/static/main1119.css"/>
+</head>
+<body>
+	<div class='map' id="container"></div>
+	<div class="form-box">
+		<form action="" class="form-group" id="form">
+			<span class="logo"><i></i></span>
+			<div class="input-box">
+				<input type="search" placeholder='请输入重点区域名称' name="zone" class="btn zone" id="key-word">
+				<input type="text" id="lnglat" readonly="ture" name='lnglat'>
+				<button type="submit" class="primary-btn">确定</button>
+			</div>
+		</form>
+		<div class="weather-info">
+				<span>深圳</span>
+				<span id="weather"></span>
+		</div>
+	</div>
+	<script src="./publics/libs/jquery/jquery-3.1.0.min.js"></script>
+	<script src="./publics/js/hotmap.js"></script>
+</body>
+</html>
