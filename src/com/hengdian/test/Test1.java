@@ -22,43 +22,6 @@ import com.hengdian.utils.JDBCUtils;
 public class Test1 {
 
 	public static void main(String[] args) {
-		JDBCUtils jdbcUtils = new JDBCUtils();
-		String sql2 = "select name,longitude,latitude,lnglat from hotspot_info"; // where
-																					// district=?";
-		String sql3 = "select";
-		ResultSet rs;
-		rs = jdbcUtils.executeQuery(sql2, null);
-		try {
-			List<NormalPoint> points = new ArrayList<NormalPoint>();
-			int i = 0;
-			while (rs.next()) {
-				String lo_la = rs.getString(4);
-				points.add(new NormalPoint(rs.getString(1), rs.getDouble(2), rs
-						.getDouble(3), lo_la));
-
-				sql3 += " sum (case when lnglat='" + lo_la + "' then 1 end) st"
-						+ i + ",";
-				i++;
-			}
-			sql3 = sql3.substring(0, sql3.lastIndexOf(","));
-			sql3 += " from key_point_area where status=3";
-			System.out.println(sql3);
-
-			rs = jdbcUtils.executeQuery(sql3, null);
-
-			NormalPoint point;
-			while (rs.next()) {
-				for (int p = 0; p < i; p++) {
-					point = points.get(p);
-					rs.getInt(p+1);
-					System.out.println(point.lo_la + "==" + rs.getInt(p+1));
-				}
-				// System.out.println(rs.getInt(1)+"="+rs.getInt(2)+"="+rs.getInt(3)+"="+rs.getInt(4)+"="+rs.getInt(5)+"="+rs.getInt(6)+"="+rs.getInt(7)+"="+rs.getInt(8));
-			}
-
-		} catch (SQLException e) {
-
-			e.printStackTrace();
-		}
+		System.out.println("/d");
 	}
 }

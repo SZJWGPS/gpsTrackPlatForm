@@ -37,26 +37,41 @@
 	* format：日期格式，有：YYYY-MM-DD hh:mm:ss, YYYY-MM-DD
 	* 
 	*/
-   var startDate = {
+    var startDate = {
        elem:   '#startDate',
 	   format: 'YYYY-MM-DD',
 	   min: '2015-01-01',
        max:    laydate.now(),
        choose: function(datas) {
-           console.log(typeof(datas));
            endDate.min = datas;
            endDate.start = datas;
        }
-   }
-   var endDate = {
+       
+   };
+    var endDate = {
        elem:   '#endDate',
 	   format: 'YYYY-MM-DD',
 	   min: '2015-01-01',
-       max:    laydate.now()
-   }
-
+       max: laydate.now()
+	};
+    
    laydate(startDate);
    laydate(endDate);
+   /*
+	 * 计算指定日期n天后的日期
+	 */
+	function adddays(starDate, interval) {  
+	    var now = new Date(starDate);  
+	    var newdate = new Date();  
+	    var sumtimes = now.getTime()+(interval*24*60*60*1000);  
+	    newdate.setTime(sumtimes);  
+	    
+	    var endDate = "'" + newdate.getFullYear() + "-" + (newdate.getMonth()+1) + "-" + newdate.getDate() + "'";
+	    return {
+	    	sumtimes: sumtimes,
+	    	endDate: endDate
+	   };
+	}
   /*
    *  表单验证函数
    */

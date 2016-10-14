@@ -76,6 +76,7 @@ public class JDBCUtils {
 		int iCount = 0;
 		try {
 			if (getConnection()) {
+				conn.setAutoCommit(true);
 				pstmt = conn.prepareStatement(sql);
 
 				if (val != null) {

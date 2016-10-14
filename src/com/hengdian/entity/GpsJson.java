@@ -109,7 +109,7 @@ public class GpsJson {
 	 * @param off
 	 *            下客总数
 	 */
-	public void setOnOffValue(int on, int off) {
+	public void setOnOffValue(long on, long off) {
 		onOffValue.add(0, on);
 		onOffValue.add(1, off);
 	}

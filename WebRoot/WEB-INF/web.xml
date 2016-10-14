@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" id="WebApp_ID" version="2.5">
-  <display-name>after_saleServiceSystem</display-name>
+  <display-name>gpsTrackPlatForm</display-name>
   <welcome-file-list>
     <welcome-file>index.html</welcome-file>
     <welcome-file>index.htm</welcome-file>
@@ -19,8 +19,7 @@
     <servlet-name>GpsServLet</servlet-name>
     <url-pattern>/gpsServLet</url-pattern>
   </servlet-mapping>
-  
-   <servlet>
+  <servlet>
     <description></description>
     <display-name>HotspotManageServlet</display-name>
     <servlet-name>HotspotManageServlet</servlet-name>
@@ -29,5 +28,5 @@
   <servlet-mapping>
     <servlet-name>HotspotManageServlet</servlet-name>
     <url-pattern>/hotspotManageServlet</url-pattern>
-  </servlet-mapping> 
+  </servlet-mapping>
 </web-app>
